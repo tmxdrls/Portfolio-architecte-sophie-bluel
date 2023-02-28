@@ -14,15 +14,13 @@ fetch("http://localhost:5678/api/categories")
     liAll.appendChild(buttonAll)
     buttonAll.textContent= "Tous"
     gallery.appendChild(menu)
-    buttonAll.addEventListener('click',function{
-        console.log(category.id)
-    })
     for(let filter of category){
         const liFilter= document.createElement("li")
         const buttonFilter= document.createElement("button")
         liFilter.appendChild(buttonFilter)
         menu.appendChild(liFilter)
         buttonFilter.textContent= filter.name
+        buttonFilter.setAttribute("data-tag",filter.id)
     }
 
 })
@@ -31,7 +29,7 @@ fetch("http://localhost:5678/api/works")
 
 .then(response=> response.json())
 
-.then(works=> {
+.then(works=> { 
     for(let project of works){
         console.log(project);
         const figure= document.createElement("figure")
@@ -42,7 +40,18 @@ fetch("http://localhost:5678/api/works")
         const figcaption= document.createElement("figcaption")
         figcaption.textContent= project.title
         figure.appendChild(figcaption)
-        const figureHtml= document.querySelector(".gallery figure")
         gallery.appendChild(figure)
     }
+    const button= document.querySelectorAll("[data-tag]")
+    button.forEach(btn =>{
+        btn.addEventListener('click',()=>{
+            const tag= btn.getAttribute("data-tag")
+            console.log(tag)
+            const category= works.filter(work=> work.categoryId == tag)
+            
+           
+            console.log(category)
+            
+        })
+    })
 })
