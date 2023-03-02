@@ -34,6 +34,10 @@ body {
 ol, ul {
 	list-style: none;
 }
+a {
+	text-decoration: none;
+	color: black;
+}
 blockquote, q {
 	quotes: none;
 }
@@ -202,6 +206,10 @@ menu button.actived{
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+#contact a {
+	text-align: center;
+	text-decoration: underline;
+}
 
 input[type="submit"]{
 	font-family: 'Syne';
@@ -217,6 +225,9 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
+}
+footer li {
+	font-size: 14px;
 }
 

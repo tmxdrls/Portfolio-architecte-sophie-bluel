@@ -1,12 +1,9 @@
-console.log("Hello")
-
 const gallery= document.querySelector(".gallery")
 fetch("http://localhost:5678/api/categories")
 
 .then(response=> response.json())
 
 .then(category=> {
-    console.log(category);
     const menu= document.createElement("menu")
     const liAll= document.createElement("li")
     menu.appendChild(liAll)
@@ -43,15 +40,14 @@ fetch("http://localhost:5678/api/works")
         gallery.appendChild(figure)
     }
     const button= document.querySelectorAll("[data-tag]")
-    button.forEach(btn =>{
-        btn.addEventListener('click',()=>{
-            const tag= btn.getAttribute("data-tag")
-            console.log(tag)
-            const category= works.filter(work=> work.categoryId == tag)
-            
-           
-            console.log(category)
-            
+    button.forEach(btn=> {
+        btn.addEventListener('click',function () {
+                const tag = btn.getAttribute("data-tag")
+                console.log(tag)
+                const filter= works.filter(work => work.categoryId == tag)
+                console.log(filter)
+                gallery.innerHTML= (filter)
+
+            })  
         })
-    })
 })
