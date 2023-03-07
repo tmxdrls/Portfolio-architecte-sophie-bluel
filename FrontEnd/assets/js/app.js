@@ -5,30 +5,25 @@ fetch("http://localhost:5678/api/categories")
 
 .then(category=> {
     const menu= document.createElement("menu")
-    const liAll= document.createElement("li")
-    menu.appendChild(liAll)
     const buttonAll= document.createElement("button")
-    liAll.appendChild(buttonAll)
+    menu.appendChild(buttonAll)
     buttonAll.textContent= "Tous"
-    gallery.appendChild(menu)
+    buttonAll.setAttribute("data-tag","Tous")
     for(let filter of category){
-        const liFilter= document.createElement("li")
         const buttonFilter= document.createElement("button")
-        liFilter.appendChild(buttonFilter)
-        menu.appendChild(liFilter)
+        menu.appendChild(buttonFilter)
         buttonFilter.textContent= filter.name
         buttonFilter.setAttribute("data-tag",filter.id)
     }
+    gallery.insertAdjacentHTML("beforebegin", menu.outerHTML)
 
 })
-fetch("http://localhost:5678/api/works")
-
+const dataWorks= fetch("http://localhost:5678/api/works")
 
 .then(response=> response.json())
 
 .then(works=> { 
     for(let project of works){
-        console.log(project);
         const figure= document.createElement("figure")
         const image= document.createElement("img")
         image.src= project.imageUrl
@@ -43,11 +38,35 @@ fetch("http://localhost:5678/api/works")
     button.forEach(btn=> {
         btn.addEventListener('click',function () {
                 const tag = btn.getAttribute("data-tag")
-                console.log(tag)
+                if (tag=="Tous"){
+                    for(let project of works){
+                        const figure= document.createElement("figure")
+                        const image= document.createElement("img")
+                        image.src= project.imageUrl
+                        image.alt= project.title
+                        figure.appendChild(image)
+                        const figcaption= document.createElement("figcaption")
+                        figcaption.textContent= project.title
+                        figure.appendChild(figcaption)
+                        gallery.appendChild(figure)
+                    }
+                }else {
                 const filter= works.filter(work => work.categoryId == tag)
-                console.log(filter)
-                gallery.innerHTML= (filter)
-
+                console.log(filter.length)
+                gallery.innerHTML= ""
+                for(let project of filter){
+                    console.log(project)
+                    const figure= document.createElement("figure")
+                    const image= document.createElement("img")
+                    image.src= project.imageUrl
+                    image.alt= project.title
+                    figure.appendChild(image)
+                    const figcaption= document.createElement("figcaption")
+                    figcaption.textContent= project.title
+                    figure.appendChild(figcaption)
+                    gallery.appendChild(figure)
+                }}
             })  
         })
 })
+
