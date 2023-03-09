@@ -135,17 +135,12 @@ li:hover {
 	padding: 0 20px;
 	
 }
-.gallery menu {
+menu {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	margin: 50px auto;
 	
-}
-menu li{
-	list-style: none;
-
-	margin-right: 10px;
 }
 menu button{
 	font-family: 'Syne';
@@ -157,6 +152,7 @@ menu button{
 	color: #1D6154;
 	background-color: white;
 	padding: 0 18px;
+	margin-right: 10px;
 }
 menu button:hover{
 	color: white;
@@ -211,7 +207,7 @@ menu button.actived{
 	text-decoration: underline;
 }
 
-input[type="submit"]{
+input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;

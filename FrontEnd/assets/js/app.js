@@ -39,6 +39,7 @@ const dataWorks= fetch("http://localhost:5678/api/works")
         btn.addEventListener('click',function () {
                 const tag = btn.getAttribute("data-tag")
                 if (tag=="Tous"){
+                    gallery.innerHTML= ""
                     for(let project of works){
                         const figure= document.createElement("figure")
                         const image= document.createElement("img")
@@ -52,7 +53,6 @@ const dataWorks= fetch("http://localhost:5678/api/works")
                     }
                 }else {
                 const filter= works.filter(work => work.categoryId == tag)
-                console.log(filter.length)
                 gallery.innerHTML= ""
                 for(let project of filter){
                     console.log(project)
