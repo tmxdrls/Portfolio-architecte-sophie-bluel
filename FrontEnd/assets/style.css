@@ -128,6 +128,41 @@ li:hover {
 #portfolio h2 {
 	text-align: center;
 }
+#banner {
+	width: 100%;
+	height: 59px;
+	background-color: black;
+	display: flex;
+	justify-content: center;
+}
+#publi {
+	width: auto;
+	height: 38px;
+	border-radius: 60px;
+	background-color: white;
+	padding: 10px 22px;
+	margin-left: 20px;
+	font-size: 14px;
+	color: black;
+}
+#edit {
+	width: auto;
+	border: none;
+	display: flex;
+	flex-direction: row-reverse;
+	background-color: black;
+	color: white;
+
+}
+#modif {
+	width: 84px;
+	height: 18px;
+	display: flex;
+	flex-direction: row-reverse;
+	font-size: 14px;
+	background-color: white;
+	border: none;
+}
 .gallery {
 	width: 100%;
 	display: flex;

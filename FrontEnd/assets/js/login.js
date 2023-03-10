@@ -2,6 +2,7 @@ const mail= document.querySelector('form input[type="email"]')
 const mdp= document.querySelector('form input[type="password"]')
 const buttonEnvoyer= document.querySelector('form input[type="submit"]')
 buttonEnvoyer.addEventListener('click', event=>{
+  event.preventDefault();
     const dataValue= {
         email: mail.value,
         password: mdp.value,
@@ -15,20 +16,24 @@ buttonEnvoyer.addEventListener('click', event=>{
         },
             body: chargeValue,
         })
-        .then(response=> response.json())
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            alert("Erreur dans l’identifiant ou le mot de passe");
+          }
+        })
         .then(result=>{
             console.log(result)
-            window.localStorage.setItem(result.userId ,JSON.stringify(result))
-    if(result.userId == 1) {
-        window.open(
-            "index.html"
-          )
-        alert("Connecté")
-      } else {
-        alert("Erreur Email ou Mot de passe")
-      }
-    })
+            if(result.userId == 1) {
+              window.localStorage.setItem(result.token ,JSON.stringify(result))
+              alert("Connecté")
+              location.href = "FrontEnd/index.html"
+            } else {
+              alert("Erreur dans l’identifiant ou le mot de passe")
+            }
+        })
     .catch((err) => {
-      console.log(err);
-    });
+      console.log(err)
+    })
 });
