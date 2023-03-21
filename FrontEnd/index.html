@@ -11,13 +11,25 @@
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-<header>
-	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+	<div id="modal">
+		<div id="cont-modal">
+			<button id="close"><img src="./assets/icons/close.png" alt="Fermer la page"></img></button>
+			<h2>Galerie photo</h2>
+			<div id="cont-projet">
+			</div>
+			<div id="button-modal">
+				<button id="ajouter">Ajouter une photo</button>
+				<button id="supprimer">Supprimer la galerie</button>
+			</div>
+		</div>
+	</div>
+	<header>
+	<a href=""><h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1></a>
 	<nav>
 		<ul>
 			<li><a href="#portfolio">projets</a></li>
 			<li><a href="#contact">contact</a></li>
-			<li><a href="login.html">login</a></li>
+			<li><a id="log" href="login.html" >login</a></li>
 			<li><a href=""><img src="./assets/icons/instagram.png" alt="Instagram"></a></li>
 		</ul>
 	</nav>

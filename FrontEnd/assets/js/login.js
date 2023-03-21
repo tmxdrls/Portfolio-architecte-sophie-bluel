@@ -26,9 +26,9 @@ buttonEnvoyer.addEventListener('click', event=>{
         .then(result=>{
             console.log(result)
             if(result.userId == 1) {
-              window.localStorage.setItem(result.token ,JSON.stringify(result))
+              localStorage.setItem("token" ,JSON.stringify(result))
               alert("Connecté")
-              location.href = "FrontEnd/index.html"
+              location.href = "index.html"
             } else {
               alert("Erreur dans l’identifiant ou le mot de passe")
             }

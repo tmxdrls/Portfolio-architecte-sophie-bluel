@@ -57,10 +57,85 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
+#modal{
+	display: none;
+}
+#modal.modal-visible{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.4);
+}
+#cont-modal {
+	background: white;
+	width: 40%;
+	max-width: 630px;
+	max-height: 730px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 10px;
+	padding-bottom: 50px;
+}
+#close{
+	border: none;
+	background-color: white;
+	align-self: flex-end;
+	padding: 32px;
+}
+#cont-modal h2 {
+	color: black;
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 30px;
+	margin-bottom: 45px;
+}
+#cont-projet {
+	width: 70%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	padding-bottom: 47px;
+	border-bottom: 1px solid #B3B3B3;
+	margin-bottom: 40px;
+}
+#button-modal {
+	display: flex;
+	flex-direction: column;
+}
+#ajouter {
+	color:white;
+	width: 237px;
+	height: 36px;
+	background: #1D6154;
+	border-radius: 60px;
+	border: none;
+	font-family: 'Syne';
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 17px;
+}
+#supprimer {
+	border: none;
+	background-color: white;
+	font-family: 'Syne';
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	color: #D65353;
+	margin-top: 23px;
+}
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	flex-wrap: wrap;
 }
 section {
 	margin: 50px 0
@@ -116,7 +191,9 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
+	align-self: center;
+	margin-bottom: 55px;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -134,16 +211,8 @@ li:hover {
 	background-color: black;
 	display: flex;
 	justify-content: center;
-}
-#publi {
-	width: auto;
-	height: 38px;
-	border-radius: 60px;
-	background-color: white;
-	padding: 10px 22px;
-	margin-left: 20px;
-	font-size: 14px;
-	color: black;
+	align-items: center;
+	margin-bottom: 30px;
 }
 #edit {
 	width: auto;
@@ -152,16 +221,45 @@ li:hover {
 	flex-direction: row-reverse;
 	background-color: black;
 	color: white;
-
+	font-size: 16px;
+	font-family: 'Work Sans';
+	font-weight: 400;
+	margin-right: 20px;
 }
-#modif {
+#edit img {
+	background-color: white;
+	margin-right: 12px;
+}
+#publi {
+	width: auto;
+	height: 38px;
+	padding: 8px 20px;
+	border-radius: 60px;
+	background-color: white;
+	font-size: 14px;
+	color: black;
+	font-family: 'Work Sans';
+	font-weight: 500;
+}
+.modif {
 	width: 84px;
 	height: 18px;
 	display: flex;
 	flex-direction: row-reverse;
+	justify-content: space-between;
 	font-size: 14px;
 	background-color: white;
 	border: none;
+}
+.modif:nth-child(1) {
+	margin-bottom: 40px;
+}
+  
+.modif:nth-child(2) {
+	margin: 15px 50px;
+}
+.modif img {
+	margin-right: 12px;
 }
 .gallery {
 	width: 100%;
