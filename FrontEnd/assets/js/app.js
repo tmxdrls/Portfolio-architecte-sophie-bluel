@@ -92,6 +92,16 @@ const createProject = (project) => {
       image.style.maxHeight = "104px"
       image.style.maxWidth= "78px"
       figure.appendChild(image)
+      figure.style.marginBottom= "12px"
+      const removeImage= document.createElement("img")
+      removeImage.src= "./assets/icons/remove.png"
+      removeImage.alt= "Supprimer un projet"
+      removeImage.setAttribute("class","removeImage")
+      const removeButton= document.createElement("button")
+      removeButton.setAttribute("class","removeButton")
+      removeButton.appendChild(removeImage)
+      removeButton.setAttribute("data-tag", project.id)
+      figure.appendChild(removeButton)
       const figcaption = document.createElement("figcaption")
       figcaption.textContent = "éditer"
       figure.appendChild(figcaption)
