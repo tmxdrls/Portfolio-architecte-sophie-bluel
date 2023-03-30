@@ -20,7 +20,7 @@ buttonEnvoyer.addEventListener('click', event=>{
           if (response.ok) {
             return response.json();
           } else {
-            alert("Erreur dans l’identifiant ou le mot de passe");
+            alert("Problème de connexion");
           }
         })
         .then(result=>{

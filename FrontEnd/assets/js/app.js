@@ -7,7 +7,6 @@ const gallery= document.querySelector(".gallery")
 const token= window.localStorage.getItem("token")
 
 const tokenData = JSON.parse(window.localStorage.getItem("token"))
-const trueToken = tokenData.token
 
 fetch("http://localhost:5678/api/categories")
 
@@ -83,7 +82,17 @@ const createProject = (project) => {
     linkLogin.textContent= "logout"
   }
 
+  const logout= () => {
+    const linkLogout= document.querySelector("#log")
+    linkLogout.addEventListener("click",()=> {
+      localStorage.removeItem("token")
+      location.reload()
+    })
+  }
+
   const modal= document.querySelector("#modal")
+
+  const modalContainer= document.querySelector("#cont-modal")
 
   const buttonClose= document.querySelector("#close")
 
@@ -115,14 +124,18 @@ const createProject = (project) => {
     }
     deleteProject()
     deleteAllProject()
+    const addButton = document.querySelector("#ajouter")
+    addButton.addEventListener("click", addProjectModal)
   }
 
   const deleteProject= () => {
     const removeButtons= document.querySelectorAll(".removeButton")
     removeButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", event => {
+        event.preventDefault()
         const confirmation= confirm("Êtes vous sûr de vouloir supprimer ce projet?") 
         const id= btn.previousElementSibling.id
+        const trueToken = tokenData.token
         console.log(id) 
         if (confirmation && token) {
           fetch(`http://localhost:5678/api/works/${id}`, {
@@ -132,9 +145,9 @@ const createProject = (project) => {
               'content-type': 'application/Json',
             },
           })
-          console.log(token)
           .then(response => response.json())
           .then(alert("Votre projet a bien été supprimé"))
+          location.reload()
         } else {
           alert("Le projet n'a pas été supprimé")
         }
@@ -155,27 +168,52 @@ const createProject = (project) => {
       })
     }
 
-  const Logout=() =>{
-    const linkLogout= document.querySelector("#log")
-    linkLogout.addEventListener("click",()=>{
-      localStorage.removeItem(tokenData)
-      createProjects(works)
-    })
-  }
-  
-  fetch("http://localhost:5678/api/works")
+  const addProjectModal = (category) => {
+    const formHTML=`
+    <button id="close"><img src="./assets/icons/close.png" alt="Fermer la page"></img></button>
+      <h2>Galerie photo</h2>
+        <form id="addProjectForm" method="post" enctype="multipart/form-data">
+          <div id="newImage">
+            <label for="inputImage">Ajouter une photo:</label>
+            <input type="file" name="inputImage" id="inputImage" accept=".jpg,.png" required>
+          </div>
+          <div>
+            <label for="projectName">Titre:</label>
+            <input type="text" name="projectName" id="projectName" required>
+          </div>
+          <div>
+            <label for="projectCategory">Catégorie:</label>
+            <select name="projectCategory" id="projectCategory" required>
+              <option value="">--Choisir une catégorie--</option>
+              <option value="category1">Catégorie 1</option>
+              <option value="category2">Catégorie 2</option>
+              <option value="category3">Catégorie 3</option>
+            </select>
+          </div>
+          <div>
+            <button type="submit" id="submit-project-button">Valider</button>
+          </div>
+        </form>
+      `   
+  modalContainer.innerHTML= formHTML
+    }
+    
+
+    
+fetch("http://localhost:5678/api/works")
     .then(response => response.json())
     .then(works => {
     if (token) {
-      const menu= document.querySelector("menu")
-      menu.innerHTML=""
       createProjects(works)
       createModif()
+      logout()
+      const menu= document.querySelector("menu")
+      menu.innerHTML=""
       const modifButtons = Array.from(document.querySelectorAll(".modif, #edit, #publi")) 
       modifButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
           modal.classList.add("modal-visible")
-          projectsContainer.innerHTML="";
+          projectsContainer.innerHTML=""
           createModalProjects(works)
         })
       })
@@ -185,14 +223,14 @@ const createProject = (project) => {
 } else {
       createProjects(works)
     }
-      const button = document.querySelectorAll("[data-tag]");
+      const button = document.querySelectorAll("[data-tag]")
       button.forEach(btn => {
         btn.addEventListener("click", function() {
           const tag = btn.getAttribute("data-tag")
           if (tag === "Tous") {
             createProjects(works)
           } else {
-            const filter = works.filter(work => work.categoryId == tag);
+            const filter = works.filter(work => work.categoryId == tag)
             createProjects(filter)
           }
         })

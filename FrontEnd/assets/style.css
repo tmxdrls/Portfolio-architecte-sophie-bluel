@@ -74,6 +74,7 @@ body {
 #cont-modal {
 	background: white;
 	width: 40%;
+	height: 90%;
 	max-width: 630px;
 	max-height: 730px;
 	display: flex;
