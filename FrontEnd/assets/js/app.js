@@ -4,6 +4,11 @@ const header= document.querySelector("header")
 
 const gallery= document.querySelector(".gallery")
 
+const token= window.localStorage.getItem("token")
+
+const tokenData = JSON.parse(window.localStorage.getItem("token"))
+const trueToken = tokenData.token
+
 fetch("http://localhost:5678/api/categories")
 
 .then(response=> response.json())
@@ -25,6 +30,7 @@ fetch("http://localhost:5678/api/categories")
 
 const createProject = (project) => {
     const figure= document.createElement("figure")
+    const projectId= figure.getAttribute("data-tag")
     const image= document.createElement("img")
     image.src= project.imageUrl;
     image.alt= project.title;
@@ -77,11 +83,11 @@ const createProject = (project) => {
     linkLogin.textContent= "logout"
   }
 
-  const modal = document.querySelector("#modal")
+  const modal= document.querySelector("#modal")
 
   const buttonClose= document.querySelector("#close")
 
-  const projectsContainer = modal.querySelector("#cont-projet")
+  const projectsContainer= modal.querySelector("#cont-projet")
 
   const createModalProjects = (works) => {
     for (let project of works) {
@@ -89,30 +95,77 @@ const createProject = (project) => {
       const image = document.createElement("img")
       image.src = project.imageUrl
       image.alt = project.title
-      image.style.maxHeight = "104px"
+      image.setAttribute("id", project.id)
+      image.setAttribute("class", "imgModal")
+      image.style.maxHeight= "104px"
       image.style.maxWidth= "78px"
       figure.appendChild(image)
-      figure.style.marginBottom= "12px"
-      const removeImage= document.createElement("img")
-      removeImage.src= "./assets/icons/remove.png"
-      removeImage.alt= "Supprimer un projet"
-      removeImage.setAttribute("class","removeImage")
-      const removeButton= document.createElement("button")
-      removeButton.setAttribute("class","removeButton")
+      const removeImage = document.createElement("img")
+      removeImage.src = "./assets/icons/remove.png"
+      removeImage.alt = "Supprimer un projet"
+      removeImage.setAttribute("class", "removeImage")
+      const removeButton = document.createElement("button")
+      removeButton.setAttribute("class", "removeButton")
       removeButton.appendChild(removeImage)
-      removeButton.setAttribute("data-tag", project.id)
       figure.appendChild(removeButton)
       const figcaption = document.createElement("figcaption")
       figcaption.textContent = "éditer"
       figure.appendChild(figcaption)
       projectsContainer.appendChild(figure)
     }
+    deleteProject()
+    deleteAllProject()
   }
 
+  const deleteProject= () => {
+    const removeButtons= document.querySelectorAll(".removeButton")
+    removeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const confirmation= confirm("Êtes vous sûr de vouloir supprimer ce projet?") 
+        const id= btn.previousElementSibling.id
+        console.log(id) 
+        if (confirmation && token) {
+          fetch(`http://localhost:5678/api/works/${id}`, {
+            method: 'DELETE',
+            headers: { 
+              'authorization': 'Bearer ' + trueToken,
+              'content-type': 'application/Json',
+            },
+          })
+          console.log(token)
+          .then(response => response.json())
+          .then(alert("Votre projet a bien été supprimé"))
+        } else {
+          alert("Le projet n'a pas été supprimé")
+        }
+      })
+    })
+  }
+
+  const deleteAllProject= () => {
+    const removeAllButton= document.querySelector("#supprimer")
+    removeAllButton.addEventListener("click", () => {
+        const confirmation= confirm("Êtes vous sûr de vouloir supprimer tous les projets?") 
+        if (confirmation && token) {
+        gallery.innerHTML=""
+        projectsContainer.innerHTML=""
+        } else {
+          createModalProjects()
+        }
+      })
+    }
+
+  const Logout=() =>{
+    const linkLogout= document.querySelector("#log")
+    linkLogout.addEventListener("click",()=>{
+      localStorage.removeItem(tokenData)
+      createProjects(works)
+    })
+  }
+  
   fetch("http://localhost:5678/api/works")
     .then(response => response.json())
     .then(works => {
-    const token= window.localStorage.getItem("token")
     if (token) {
       const menu= document.querySelector("menu")
       menu.innerHTML=""

@@ -98,16 +98,16 @@ body {
 	margin-bottom: 45px;
 }
 #cont-projet {
-	width: 70%;
+	width: 75%;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
 	padding-bottom: 47px;
 	border-bottom: 1px solid #B3B3B3;
 	margin-bottom: 40px;
 }
 #cont-projet figure {
 	position: relative;
+	padding: 3px;
 }
 .removeImage {
 	width: 9px;
@@ -125,8 +125,8 @@ body {
 	justify-content: center;
 	align-items: center;
 	position: absolute;
-	top: 6px;
-	right:6px;
+	top: 8px;
+	right: 8px;
 }
 #button-modal {
 	display: flex;
