@@ -29,7 +29,6 @@ fetch("http://localhost:5678/api/categories")
 
 const createProject = (project) => {
     const figure= document.createElement("figure")
-    const projectId= figure.getAttribute("data-tag")
     const image= document.createElement("img")
     image.src= project.imageUrl;
     image.alt= project.title;
@@ -90,6 +89,7 @@ const createProject = (project) => {
     })
   }
 
+/*Modale créee en HTML"*/
   const modal= document.querySelector("#modal")
 
   const modalContainer= document.querySelector("#cont-modal")
@@ -97,6 +97,7 @@ const createProject = (project) => {
   const buttonClose= document.querySelector("#close")
 
   const projectsContainer= modal.querySelector("#cont-projet")
+
 
   const createModalProjects = (works) => {
     for (let project of works) {
@@ -125,7 +126,8 @@ const createProject = (project) => {
     deleteProject()
     deleteAllProject()
     const addButton = document.querySelector("#ajouter")
-    addButton.addEventListener("click", addProjectModal)
+    addButton.addEventListener("click", formProjectModal)
+    closeModal()
   }
 
   const deleteProject= () => {
@@ -135,13 +137,12 @@ const createProject = (project) => {
         event.preventDefault()
         const confirmation= confirm("Êtes vous sûr de vouloir supprimer ce projet?") 
         const id= btn.previousElementSibling.id
-        const trueToken = tokenData.token
         console.log(id) 
         if (confirmation && token) {
           fetch(`http://localhost:5678/api/works/${id}`, {
             method: 'DELETE',
             headers: { 
-              'authorization': 'Bearer ' + trueToken,
+              'authorization': 'Bearer ' + tokenData,
               'content-type': 'application/Json',
             },
           })
@@ -168,47 +169,82 @@ const createProject = (project) => {
       })
     }
 
-  const addProjectModal = (category) => {
+  const formProjectModal = () => {
     const formHTML=`
-    <button id="close"><img src="./assets/icons/close.png" alt="Fermer la page"></img></button>
-      <h2>Galerie photo</h2>
         <form id="addProjectForm" method="post" enctype="multipart/form-data">
           <div id="newImage">
             <label for="inputImage">Ajouter une photo:</label>
-            <input type="file" name="inputImage" id="inputImage" accept=".jpg,.png" required>
+            <input type="file" id="inputImage" accept=".jpg,.png" required>
           </div>
           <div>
-            <label for="projectName">Titre:</label>
-            <input type="text" name="projectName" id="projectName" required>
+            <label for="projectName">Titre</label></br>
+            <input type="text" id="projectName" required>
           </div>
           <div>
-            <label for="projectCategory">Catégorie:</label>
-            <select name="projectCategory" id="projectCategory" required>
-              <option value="">--Choisir une catégorie--</option>
-              <option value="category1">Catégorie 1</option>
-              <option value="category2">Catégorie 2</option>
-              <option value="category3">Catégorie 3</option>
+            <label for="projectCategory">Catégorie</label></br>
+            <select id="projectCategory" required>
+              <option value="1">Objet</option>
+              <option value="2">Appartement</option>
+              <option value="3">Hotêls & Restaurant</option>
             </select>
           </div>
-          <div>
-            <button type="submit" id="submit-project-button">Valider</button>
-          </div>
+          <button id="addProjectButton"> Valider </button>
         </form>
       `   
-  modalContainer.innerHTML= formHTML
+  projectsContainer.innerHTML= formHTML
+  document.querySelector("#cont-modal h2").textContent= "Ajout photo"
+  document.querySelector("#button-modal").style.display="none"
+  const buttonValid= document.querySelector("#addProjectButton")
+  buttonValid.addEventListener("click",(event)=> {
+    console.log("test")
+    event.preventDefault()
+    const inputImage= document.querySelector("input[type='file']")
+    const projectName= document.getElementById("projectName")
+    const projectCategory= document.getElementById("projectCategory")
+    const formData= new FormData()
+    formData.append("image",inputImage.files[0])
+    formData.append("title",projectName.value)
+    formData.append("category",projectCategory.value)
+    for (let data of formData.entries()){
+console.log(data[0]+" "+ data[1])
     }
+    const confirmation= confirm("Êtes vous sûr de vouloir ajouter ce projet?")
+    if (confirmation && token) {
+      fetch("http://localhost:5678/api/works", {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Authorization': 'Bearer ' + tokenData
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          alert("Votre projet a bien été ajouté")
+          location.reload()
+        } else {
+          throw new Error("Problème de connexion")
+        }
+      })
+      .catch(error => console.error(error))
+  }
+  })
+}
     
-
+  closeModal=() =>{
+  buttonClose.addEventListener("click", function() {
+    modal.classList.remove('modal-visible')
+})
+}
     
 fetch("http://localhost:5678/api/works")
     .then(response => response.json())
     .then(works => {
     if (token) {
+      const menu= document.querySelector("menu")
+      menu.innerHTML=""
       createProjects(works)
       createModif()
       logout()
-      const menu= document.querySelector("menu")
-      menu.innerHTML=""
       const modifButtons = Array.from(document.querySelectorAll(".modif, #edit, #publi")) 
       modifButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -217,9 +253,6 @@ fetch("http://localhost:5678/api/works")
           createModalProjects(works)
         })
       })
-      buttonClose.addEventListener("click", function() {
-        modal.classList.remove('modal-visible')
-})
 } else {
       createProjects(works)
     }
