@@ -50,11 +50,17 @@ const createProject = (project) => {
     const banner= document.createElement("div")
     banner.setAttribute("id","banner")
 
-    const iconeModif = document.createElement("img")
-    iconeModif.src = "./assets/icons/modif.png"
+    const iconeModif = document.createElement("i")
+    iconeModif.setAttribute("class","fa-regular fa-pen-to-square")
+    iconeModif.style.color="#000000"
+    iconeModif.style.marginRight="10px"
+    iconeModif.style.fontSize="15px"
 
-    const iconeEdit = document.createElement("img")
-    iconeEdit.src = "./assets/icons/modif.png"
+    const iconeEdit = document.createElement("i")
+    iconeEdit.setAttribute("class","fa-regular fa-pen-to-square")
+    iconeEdit.style.color="#FFFFFF"
+    iconeEdit.style.marginRight="10px"
+    iconeEdit.style.fontSize="15px"
 
     const btnModif = document.createElement('button')
     btnModif.setAttribute("class","modif")
@@ -102,18 +108,21 @@ const createProject = (project) => {
   const createModalProjects = (works) => {
     for (let project of works) {
       const figure = document.createElement("figure")
+
       const image = document.createElement("img")
       image.src = project.imageUrl
       image.alt = project.title
       image.setAttribute("id", project.id)
       image.setAttribute("class", "imgModal")
-      image.style.maxHeight= "104px"
-      image.style.maxWidth= "78px"
+      image.style.height= "102px"
+      image.style.width= "76px"
       figure.appendChild(image)
-      const removeImage = document.createElement("img")
-      removeImage.src = "./assets/icons/remove.png"
-      removeImage.alt = "Supprimer un projet"
-      removeImage.setAttribute("class", "removeImage")
+
+      const removeImage = document.createElement("i")
+      removeImage.setAttribute("class","fa-solid fa-trash-can")
+      removeImage.style.color="#FFFFFF"
+      removeImage.style.fontSize="9px"
+
       const removeButton = document.createElement("button")
       removeButton.setAttribute("class", "removeButton")
       removeButton.appendChild(removeImage)
@@ -224,6 +233,11 @@ console.log(data[0]+" "+ data[1])
         } else {
           throw new Error("Problème de connexion")
         }
+      })
+      .then(newWorks => {
+        newWorks.forEach((newWork)=> {
+          newWork.style.maxHeight="422px"
+        })
       })
       .catch(error => console.error(error))
   }

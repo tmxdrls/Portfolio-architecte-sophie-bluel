@@ -73,7 +73,7 @@ body {
 }
 #cont-modal {
 	background: white;
-	width: 40%;
+	width: 55%;
 	height: auto;
 	max-width: 630px;
 	max-height: 730px;
@@ -88,6 +88,7 @@ body {
 	background-color: white;
 	align-self: flex-end;
 	padding: 32px;
+	border-radius: 10px;
 }
 #cont-modal h2 {
 	color: black;
@@ -99,7 +100,7 @@ body {
 	margin-bottom: 45px;
 }
 #cont-projet {
-	width: 75%;
+	width: 66%;
 	display: flex;
 	flex-wrap: wrap;
 	padding-bottom: 47px;
@@ -110,14 +111,8 @@ body {
 	position: relative;
 	padding: 3px;
 }
-.removeImage {
-	width: 9px;
-	height: 9px;
-	background-color: black;
-	border: 4px solid black;
-	border-radius: 2px;
-}
 .removeButton {
+	background-color: black;
 	width: 17px;
 	height: 17px;
 	border: none;
@@ -225,8 +220,10 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-	text-align: center;
+#titleGallery{
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 #banner {
 	width: 100%;
@@ -244,14 +241,10 @@ li:hover {
 	flex-direction: row-reverse;
 	background-color: black;
 	color: white;
-	font-size: 16px;
+	font-size: 15px;
 	font-family: 'Work Sans';
 	font-weight: 400;
 	margin-right: 20px;
-}
-#edit img {
-	background-color: white;
-	margin-right: 12px;
 }
 #publi {
 	width: auto;
@@ -265,24 +258,23 @@ li:hover {
 	font-weight: 500;
 }
 .modif {
-	width: 84px;
+	width: 90px;
 	height: 18px;
 	display: flex;
 	flex-direction: row-reverse;
-	justify-content: space-between;
 	font-size: 14px;
 	background-color: white;
 	border: none;
 }
-.modif:nth-child(1) {
+.modif:first-child {
 	margin-bottom: 40px;
 }
-  
-.modif:nth-child(2) {
-	margin: 15px 50px;
+#introduction figure .modif{
+	margin-top:15px;
+	margin-left:50px;
 }
-.modif img {
-	margin-right: 12px;
+.modif:last-child{
+	margin:15px;
 }
 .gallery {
 	width: 100%;
@@ -326,6 +318,7 @@ menu button.actived{
 }
 .gallery img {
 	width: 100%;
+	height: 410px;
 }
 #contact {
 	width: 50%;
