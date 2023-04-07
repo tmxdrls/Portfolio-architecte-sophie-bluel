@@ -100,6 +100,8 @@ const createProject = (project) => {
 
   const modalContainer= document.querySelector("#cont-modal")
 
+  const buttonBack= document.getElementById("back")
+
   const buttonClose= document.querySelector("#close")
 
   const projectsContainer= modal.querySelector("#cont-projet")
@@ -182,14 +184,20 @@ const createProject = (project) => {
     const formHTML=`
         <form id="addProjectForm" method="post" enctype="multipart/form-data">
           <div id="newImage">
-            <label for="inputImage">Ajouter une photo:</label>
-            <input type="file" id="inputImage" accept=".jpg,.png" required>
-          </div>
+            <div id="containerIcone">
+            <i class="fa-solid fa-camera-retro"></i>
+            </div>
+              <button>
+                <label for="inputImage">+ Ajouter une photo</label>
+                <input type="file" id="inputImage" accept=".jpg,.png" required>
+              </button>
+              <p>jpg, png : 4mo max.</p>
+            </div>
           <div>
             <label for="projectName">Titre</label></br>
             <input type="text" id="projectName" required>
           </div>
-          <div>
+          <div id="category">
             <label for="projectCategory">Catégorie</label></br>
             <select id="projectCategory" required>
               <option value="1">Objet</option>
@@ -200,16 +208,32 @@ const createProject = (project) => {
           <button id="addProjectButton"> Valider </button>
         </form>
       `   
-  projectsContainer.innerHTML= formHTML
+  buttonBack.style.color="black"
   document.querySelector("#cont-modal h2").textContent= "Ajout photo"
+  projectsContainer.innerHTML= formHTML
+  projectsContainer.classList.add("active")
   document.querySelector("#button-modal").style.display="none"
+  
+  const inputImage = document.querySelector("input[type='file']")
+  inputImage.addEventListener("change", () => {
+    const fileReader = new FileReader()
+    fileReader.readAsDataURL(inputImage.files[0])
+    fileReader.onload = () => {
+      const newImage = document.getElementById("newImage")
+      const img = document.createElement("img")
+      img.setAttribute("src", fileReader.result)
+      img.style.width="50%"
+      img.style.height="100%"
+      newImage.innerHTML = ""
+      newImage.appendChild(img)
+    }
+  })
+
+  const projectName= document.getElementById("projectName")
+  const projectCategory= document.getElementById("projectCategory")
   const buttonValid= document.querySelector("#addProjectButton")
   buttonValid.addEventListener("click",(event)=> {
-    console.log("test")
     event.preventDefault()
-    const inputImage= document.querySelector("input[type='file']")
-    const projectName= document.getElementById("projectName")
-    const projectCategory= document.getElementById("projectCategory")
     const formData= new FormData()
     formData.append("image",inputImage.files[0])
     formData.append("title",projectName.value)
@@ -231,13 +255,8 @@ console.log(data[0]+" "+ data[1])
           alert("Votre projet a bien été ajouté")
           location.reload()
         } else {
-          throw new Error("Problème de connexion")
+          alert("Une erreur s'est produite")
         }
-      })
-      .then(newWorks => {
-        newWorks.forEach((newWork)=> {
-          newWork.style.maxHeight="422px"
-        })
       })
       .catch(error => console.error(error))
   }

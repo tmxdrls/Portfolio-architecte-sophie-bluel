@@ -17,10 +17,10 @@ buttonEnvoyer.addEventListener('click', event=>{
             body: chargeValue,
         })
         .then(response => {
-          if (response.ok) {
-            return response.json();
+          if (response) {
+            return response.json()
           } else {
-            alert("Problème de connexion");
+            alert("Problème de connexion")
           }
         })
         .then(result=>{
