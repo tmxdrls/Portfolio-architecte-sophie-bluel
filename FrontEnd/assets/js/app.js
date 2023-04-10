@@ -30,8 +30,8 @@ fetch("http://localhost:5678/api/categories")
 const createProject = (project) => {
     const figure= document.createElement("figure")
     const image= document.createElement("img")
-    image.src= project.imageUrl;
-    image.alt= project.title;
+    image.src= project.imageUrl
+    image.alt= project.title
     figure.appendChild(image)
     const figcaption = document.createElement("figcaption")
     figcaption.textContent = project.title
@@ -47,6 +47,10 @@ const createProject = (project) => {
   }
 
   const createModif=()=> {
+    const menu= document.querySelector("menu")
+    if(menu){
+      menu.innerHTML=""
+    }
     const banner= document.createElement("div")
     banner.setAttribute("id","banner")
 
@@ -90,23 +94,35 @@ const createProject = (project) => {
   const logout= () => {
     const linkLogout= document.querySelector("#log")
     linkLogout.addEventListener("click",()=> {
+      const confirmation= confirm("Êtes vous sûr de vouloir vous déconnecter?")
+      if(confirmation){
       localStorage.removeItem("token")
       location.reload()
+    }
     })
   }
 
 /*Modale créee en HTML"*/
-  const modal= document.querySelector("#modal")
+  const modal= document.getElementById("modal")
 
-  const modalContainer= document.querySelector("#cont-modal")
+  const modalContainer= document.getElementById("cont-modal")
 
   const buttonBack= document.getElementById("back")
 
-  const buttonClose= document.querySelector("#close")
+  const buttonClose= document.getElementById("close")
 
-  const projectsContainer= modal.querySelector("#cont-projet")
+  const projectsContainer= document.getElementById("cont-projet")
 
-
+  const displayModal=(works)=>{
+  const modifButtons = Array.from(document.querySelectorAll(".modif, #edit, #publi")) 
+  modifButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      modal.classList.add("modal-visible")
+      projectsContainer.innerHTML=""
+      createModalProjects(works)
+    })
+  })
+}
   const createModalProjects = (works) => {
     for (let project of works) {
       const figure = document.createElement("figure")
@@ -115,7 +131,6 @@ const createProject = (project) => {
       image.src = project.imageUrl
       image.alt = project.title
       image.setAttribute("id", project.id)
-      image.setAttribute("class", "imgModal")
       image.style.height= "102px"
       image.style.width= "76px"
       figure.appendChild(image)
@@ -128,17 +143,16 @@ const createProject = (project) => {
       const removeButton = document.createElement("button")
       removeButton.setAttribute("class", "removeButton")
       removeButton.appendChild(removeImage)
+
       figure.appendChild(removeButton)
+
       const figcaption = document.createElement("figcaption")
       figcaption.textContent = "éditer"
       figure.appendChild(figcaption)
+
       projectsContainer.appendChild(figure)
     }
     deleteProject()
-    deleteAllProject()
-    const addButton = document.querySelector("#ajouter")
-    addButton.addEventListener("click", formProjectModal)
-    closeModal()
   }
 
   const deleteProject= () => {
@@ -160,8 +174,6 @@ const createProject = (project) => {
           .then(response => response.json())
           .then(alert("Votre projet a bien été supprimé"))
           location.reload()
-        } else {
-          alert("Le projet n'a pas été supprimé")
         }
       })
     })
@@ -179,6 +191,11 @@ const createProject = (project) => {
         }
       })
     }
+
+  const changeModal=()=>{
+    const addButton = document.querySelector("#ajouter")
+    addButton.addEventListener("click", formProjectModal)
+  }
 
   const formProjectModal = () => {
     const formHTML=`
@@ -213,11 +230,16 @@ const createProject = (project) => {
   projectsContainer.innerHTML= formHTML
   projectsContainer.classList.add("active")
   document.querySelector("#button-modal").style.display="none"
+
+  const projectName= document.getElementById("projectName")
+  const projectCategory= document.getElementById("projectCategory")
+  const buttonValid= document.getElementById("addProjectButton")
+  const inputImage = document.getElementById("inputImage")
   
-  const inputImage = document.querySelector("input[type='file']")
-  inputImage.addEventListener("change", () => {
+  inputImage.addEventListener("input", () => {
+    const file = inputImage.files[0]
     const fileReader = new FileReader()
-    fileReader.readAsDataURL(inputImage.files[0])
+    fileReader.readAsDataURL(file)
     fileReader.onload = () => {
       const newImage = document.getElementById("newImage")
       const img = document.createElement("img")
@@ -226,12 +248,20 @@ const createProject = (project) => {
       img.style.height="100%"
       newImage.innerHTML = ""
       newImage.appendChild(img)
+    }  
+  })
+  
+  const formValues = Array.from(document.querySelectorAll("#projectName, #projectCategory, #inputImage"))
+formValues.forEach(input => {
+  input.addEventListener('input', () => {
+    if (formValues.every(input => input.checkValidity())) {
+      buttonValid.style.backgroundColor = "#1D6154"
+    } else {
+      buttonValid.style.backgroundColor = ""
     }
   })
+})
 
-  const projectName= document.getElementById("projectName")
-  const projectCategory= document.getElementById("projectCategory")
-  const buttonValid= document.querySelector("#addProjectButton")
   buttonValid.addEventListener("click",(event)=> {
     event.preventDefault()
     const formData= new FormData()
@@ -241,6 +271,9 @@ const createProject = (project) => {
     for (let data of formData.entries()){
 console.log(data[0]+" "+ data[1])
     }
+    if (inputImage.files.length === 0 || projectName.value === "" || projectCategory.value === "" ) {
+      alert("Veuillez remplir tous les champs")
+    } else {
     const confirmation= confirm("Êtes vous sûr de vouloir ajouter ce projet?")
     if (confirmation && token) {
       fetch("http://localhost:5678/api/works", {
@@ -259,12 +292,32 @@ console.log(data[0]+" "+ data[1])
         }
       })
       .catch(error => console.error(error))
-  }
+  }}
   })
 }
-    
-  closeModal=() =>{
-  buttonClose.addEventListener("click", function() {
+
+resetModal= (works) => {
+buttonBack.style.color="white"
+document.querySelector("#cont-modal h2").textContent= "Galerie photo"
+document.querySelector("#button-modal").style.display="flex"
+projectsContainer.innerHTML=""
+projectsContainer.classList.remove("active") 
+createModalProjects(works) 
+}
+
+  backModal=(works)=>{
+    buttonBack.addEventListener("click",()=>{
+      const img= document.querySelector("#newImage img");
+      if (img) {
+        img.removeAttribute("src");
+      }
+     resetModal(works)
+    })
+  }
+
+  closeModal=(works) =>{
+  buttonClose.addEventListener("click", () => {
+    resetModal(works)
     modal.classList.remove('modal-visible')
 })
 }
@@ -273,19 +326,14 @@ fetch("http://localhost:5678/api/works")
     .then(response => response.json())
     .then(works => {
     if (token) {
-      const menu= document.querySelector("menu")
-      menu.innerHTML=""
       createProjects(works)
       createModif()
       logout()
-      const modifButtons = Array.from(document.querySelectorAll(".modif, #edit, #publi")) 
-      modifButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          modal.classList.add("modal-visible")
-          projectsContainer.innerHTML=""
-          createModalProjects(works)
-        })
-      })
+      displayModal(works)
+      deleteAllProject()
+      changeModal()
+      backModal(works)
+      closeModal(works)
 } else {
       createProjects(works)
     }

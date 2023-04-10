@@ -2,12 +2,12 @@ const mail= document.querySelector('form input[type="email"]')
 const mdp= document.querySelector('form input[type="password"]')
 const buttonEnvoyer= document.querySelector('form input[type="submit"]')
 buttonEnvoyer.addEventListener('click', event=>{
-  event.preventDefault();
+  event.preventDefault() 
     const dataValue= {
         email: mail.value,
         password: mdp.value,
     }
-    console.log(dataValue);
+    console.log(dataValue)
     const chargeValue= JSON.stringify(dataValue)
     fetch("http://localhost:5678/api/users/login",{
         method: 'POST',

@@ -83,25 +83,27 @@ body {
 	border-radius: 10px;
 	padding-bottom: 50px;
 }
-#containerRemoveButtons {
+#containerRemoveModal {
 	width: 100%;
 	display: flex;
-	justify-content: space-between
+	justify-content: space-between;
+	align-items: center;
 }
 #back {
 	border: none;
 	background-color: white;
-	padding: 15px 32px;
+	margin: 30px;
 	border-radius: 10px;
-	transform: rotate(180deg);
 	color: white;
+}
+#iconBack{
+	transform: rotate(180deg);	
 }
 #close{
 	border: none;
 	background-color: white;
-	padding: 32px 32px 14px;
+	margin: 30px;
 	border-radius: 10px;
-	align-self: flex-end;
 }
 #cont-modal h2 {
 	color: black;
