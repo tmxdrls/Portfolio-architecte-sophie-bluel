@@ -25,7 +25,7 @@ buttonEnvoyer.addEventListener('click', event=>{
         })
         .then(result=>{
             console.log(result)
-            if(result.userId == 1) {
+            if(result.token) {
               localStorage.setItem("token" ,JSON.stringify(result.token))
               alert("Connecté")
               location.href = "index.html"

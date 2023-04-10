@@ -325,8 +325,8 @@ createModalProjects(works)
 fetch("http://localhost:5678/api/works")
     .then(response => response.json())
     .then(works => {
-    if (token) {
       createProjects(works)
+    if (token) {
       createModif()
       logout()
       displayModal(works)
