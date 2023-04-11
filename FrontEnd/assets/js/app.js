@@ -102,7 +102,7 @@ const createProject = (project) => {
     })
   }
 
-/*Modale créee en HTML"*/
+/*Modale créee en HTML*/
   const modal= document.getElementById("modal")
 
   const modalContainer= document.getElementById("cont-modal")
