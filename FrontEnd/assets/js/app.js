@@ -46,11 +46,8 @@ const createProject = (project) => {
     }
   }
 
-  const createModif=()=> {
-    const menu= document.querySelector("menu")
-    if(menu){
-      menu.innerHTML=""
-    }
+  const createModif=(works)=> {
+    
     const banner= document.createElement("div")
     banner.setAttribute("id","banner")
 
@@ -89,6 +86,12 @@ const createProject = (project) => {
 
     const linkLogin= document.querySelector('li a[href="login.html"]').parentNode
     linkLogin.textContent= "logout"
+    
+    const menu= document.querySelector("menu")
+    if(menu){
+      menu.innerHTML=""
+    }
+    createProjects(works)
   }
 
   const logout= () => {
@@ -327,7 +330,7 @@ fetch("http://localhost:5678/api/works")
     .then(works => {
       createProjects(works)
     if (token) {
-      createModif()
+      createModif(works)
       logout()
       displayModal(works)
       deleteAllProject()
